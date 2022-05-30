@@ -1,27 +1,26 @@
-'use strict';
 const TEMPLATE_REGEX = /(?:\\(u(?:[a-f\d]{4}|\{[a-f\d]{1,6}\})|x[a-f\d]{2}|.))|(?:\{(~)?(\w+(?:\([^)]*\))?(?:\.\w+(?:\([^)]*\))?)*)(?:[ \t]|(?=\r?\n)))|(\})|((?:.|[\r\n\f])+?)/gi;
 const STYLE_REGEX = /(?:^|\.)(\w+)(?:\(([^)]*)\))?/g;
 const STRING_REGEX = /^(['"])((?:\\.|(?!\1)[^\\])*)\1$/;
 const ESCAPE_REGEX = /\\(u(?:[a-f\d]{4}|{[a-f\d]{1,6}})|x[a-f\d]{2}|.)|([^\\])/gi;
 
 const ESCAPES = new Map([
-	['n', '\n'],
-	['r', '\r'],
-	['t', '\t'],
-	['b', '\b'],
-	['f', '\f'],
-	['v', '\v'],
-	['0', '\0'],
-	['\\', '\\'],
-	['e', '\u001B'],
-	['a', '\u0007']
+	["n", "\n"],
+	["r", "\r"],
+	["t", "\t"],
+	["b", "\b"],
+	["f", "\f"],
+	["v", "\v"],
+	["0", "\0"],
+	["\\", "\\"],
+	["e", "\u001B"],
+	["a", "\u0007"]
 ]);
 
 function unescape(c) {
-	const u = c[0] === 'u';
-	const bracket = c[1] === '{';
+	const u = c[0] === "u";
+	const bracket = c[1] === "{";
 
-	if ((u && !bracket && c.length === 5) || (c[0] === 'x' && c.length === 3)) {
+	if (u && !bracket && c.length === 5 || c[0] === "x" && c.length === 3) {
 		return String.fromCharCode(parseInt(c.slice(1), 16));
 	}
 
@@ -41,6 +40,7 @@ function parseArguments(name, arguments_) {
 		const number = Number(chunk);
 		if (!Number.isNaN(number)) {
 			results.push(number);
+			// TODO: this
 		} else if ((matches = chunk.match(STRING_REGEX))) {
 			results.push(matches[2].replace(ESCAPE_REGEX, (m, escape, character) => escape ? unescape(escape) : character));
 		} else {
@@ -106,16 +106,16 @@ module.exports = (chalk, temporary) => {
 		if (escapeCharacter) {
 			chunk.push(unescape(escapeCharacter));
 		} else if (style) {
-			const string = chunk.join('');
+			const string = chunk.join("");
 			chunk = [];
 			chunks.push(styles.length === 0 ? string : buildStyle(chalk, styles)(string));
 			styles.push({inverse, styles: parseStyle(style)});
 		} else if (close) {
 			if (styles.length === 0) {
-				throw new Error('Found extraneous } in Chalk template literal');
+				throw new Error("Found extraneous } in Chalk template literal");
 			}
 
-			chunks.push(buildStyle(chalk, styles)(chunk.join('')));
+			chunks.push(buildStyle(chalk, styles)(chunk.join("")));
 			chunk = [];
 			styles.pop();
 		} else {
@@ -123,12 +123,12 @@ module.exports = (chalk, temporary) => {
 		}
 	});
 
-	chunks.push(chunk.join(''));
+	chunks.push(chunk.join(""));
 
 	if (styles.length > 0) {
-		const errMessage = `Chalk template literal is missing ${styles.length} closing bracket${styles.length === 1 ? '' : 's'} (\`}\`)`;
+		const errMessage = `Chalk template literal is missing ${styles.length} closing bracket${styles.length === 1 ? "" : "s"} (\`}\`)`;
 		throw new Error(errMessage);
 	}
 
-	return chunks.join('');
+	return chunks.join("");
 };

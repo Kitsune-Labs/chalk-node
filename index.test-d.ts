@@ -1,5 +1,5 @@
 import {expectType, expectError} from 'tsd';
-import chalk = require('.');
+import chalk from '.';
 
 // - Helpers -
 type colorReturn = chalk.Chalk & {supportsColor?: never};

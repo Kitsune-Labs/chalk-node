@@ -1,5 +1,4 @@
-'use strict';
-const resolveFrom = require('resolve-from');
+const resolveFrom = require("resolve-from");
 
 const DEFAULT = {
 	stdout: {
@@ -17,5 +16,5 @@ const DEFAULT = {
 };
 
 module.exports = (dir, override) => {
-	require.cache[resolveFrom(dir, 'supports-color')] = {exports: override || DEFAULT};
+	require.cache[resolveFrom(dir, "supports-color")] = {exports: override || DEFAULT};
 };

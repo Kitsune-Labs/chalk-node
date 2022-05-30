@@ -1,5 +1,4 @@
-'use strict';
-const chalk = require('..');
+const chalk = require("..");
 
 const ignoreChars = /[^!-~]/g;
 
@@ -10,7 +9,7 @@ function rainbow(string, offset) {
 		return string;
 	}
 
-	const hueStep = 360 / string.replace(ignoreChars, '').length;
+	const hueStep = 360 / string.replace(ignoreChars, "").length;
 
 	let hue = offset % 360;
 	const characters = [];
@@ -23,19 +22,19 @@ function rainbow(string, offset) {
 		}
 	}
 
-	return characters.join('');
+	return characters.join("");
 }
 
 async function animateString(string) {
 	console.log();
 	for (let i = 0; i < 360 * 5; i++) {
-		console.log('\u001B[1F\u001B[G', rainbow(string, i));
+		console.log("\u001B[1F\u001B[G", rainbow(string, i));
 		await delay(2); // eslint-disable-line no-await-in-loop
 	}
 }
 
 (async () => {
 	console.log();
-	await animateString('We hope you enjoy Chalk! <3');
+	await animateString("We hope you enjoy Chalk! <3");
 	console.log();
 })();

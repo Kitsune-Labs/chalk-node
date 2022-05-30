@@ -1,26 +1,22 @@
-'use strict';
-const ansiStyles = require('ansi-styles');
-const {stdout: stdoutColor, stderr: stderrColor} = require('supports-color');
-const {
-	stringReplaceAll,
-	stringEncaseCRLFWithFirstIndex
-} = require('./util');
+const ansiStyles = require("ansi-styles");
+const { stdout: stdoutColor, stderr: stderrColor } = require("supports-color");
+const { stringReplaceAll, stringEncaseCRLFWithFirstIndex } = require("./util");
 
-const {isArray} = Array;
+const { isArray } = Array;
 
 // `supportsColor.level` → `ansiStyles.color[name]` mapping
 const levelMapping = [
-	'ansi',
-	'ansi',
-	'ansi256',
-	'ansi16m'
+	"ansi",
+	"ansi",
+	"ansi256",
+	"ansi16m"
 ];
 
 const styles = Object.create(null);
 
 const applyOptions = (object, options = {}) => {
 	if (options.level && !(Number.isInteger(options.level) && options.level >= 0 && options.level <= 3)) {
-		throw new Error('The `level` option should be an integer from 0 to 3');
+		throw new Error("The `level` option should be an integer from 0 to 3");
 	}
 
 	// Detect level if not set manually
@@ -28,9 +24,9 @@ const applyOptions = (object, options = {}) => {
 	object.level = options.level === undefined ? colorLevel : options.level;
 };
 
+
 class ChalkClass {
 	constructor(options) {
-		// eslint-disable-next-line no-constructor-return
 		return chalkFactory(options);
 	}
 }
@@ -45,7 +41,7 @@ const chalkFactory = options => {
 	Object.setPrototypeOf(chalk.template, chalk);
 
 	chalk.template.constructor = () => {
-		throw new Error('`chalk.constructor()` is deprecated. Use `new chalk.Instance()` instead.');
+		throw new Error("`chalk.constructor()` is deprecated. Use `new chalk.Instance()` instead.");
 	};
 
 	chalk.template.Instance = ChalkClass;
@@ -70,12 +66,12 @@ for (const [styleName, style] of Object.entries(ansiStyles)) {
 styles.visible = {
 	get() {
 		const builder = createBuilder(this, this._styler, true);
-		Object.defineProperty(this, 'visible', {value: builder});
+		Object.defineProperty(this, "visible", {value: builder});
 		return builder;
 	}
 };
 
-const usedModels = ['rgb', 'hex', 'keyword', 'hsl', 'hsv', 'hwb', 'ansi', 'ansi256'];
+const usedModels = ["rgb", "hex", "keyword", "hsl", "hsv", "hwb", "ansi", "ansi256"];
 
 for (const model of usedModels) {
 	styles[model] = {
@@ -90,7 +86,7 @@ for (const model of usedModels) {
 }
 
 for (const model of usedModels) {
-	const bgModel = 'bg' + model[0].toUpperCase() + model.slice(1);
+	const bgModel = "bg" + model[0].toUpperCase() + model.slice(1);
 	styles[bgModel] = {
 		get() {
 			const {level} = this;
@@ -144,7 +140,7 @@ const createBuilder = (self, _styler, _isEmpty) => {
 
 		// Single argument is hot path, implicit coercion is faster than anything
 		// eslint-disable-next-line no-implicit-coercion
-		return applyStyle(builder, (arguments_.length === 1) ? ('' + arguments_[0]) : arguments_.join(' '));
+		return applyStyle(builder, arguments_.length === 1 ? "" + arguments_[0] : arguments_.join(" "));
 	};
 
 	// We alter the prototype because we must return a function, but there is
@@ -160,7 +156,7 @@ const createBuilder = (self, _styler, _isEmpty) => {
 
 const applyStyle = (self, string) => {
 	if (self.level <= 0 || !string) {
-		return self._isEmpty ? '' : string;
+		return self._isEmpty ? "" : string;
 	}
 
 	let styler = self._styler;
@@ -170,7 +166,7 @@ const applyStyle = (self, string) => {
 	}
 
 	const {openAll, closeAll} = styler;
-	if (string.indexOf('\u001B') !== -1) {
+	if (string.indexOf("\u001B") !== -1) {
 		while (styler !== undefined) {
 			// Replace any instances already present with a re-opening code
 			// otherwise only the part of the string until said closing code
@@ -184,7 +180,7 @@ const applyStyle = (self, string) => {
 	// We can move both next actions out of loop, because remaining actions in loop won't have
 	// any/visible effect on parts we add here. Close the styling before a linebreak and reopen
 	// after next line to fix a bleed issue on macOS: https://github.com/chalk/chalk/pull/92
-	const lfIndex = string.indexOf('\n');
+	const lfIndex = string.indexOf("\n");
 	if (lfIndex !== -1) {
 		string = stringEncaseCRLFWithFirstIndex(string, closeAll, openAll, lfIndex);
 	}
@@ -199,7 +195,7 @@ const chalkTag = (chalk, ...strings) => {
 	if (!isArray(firstString) || !isArray(firstString.raw)) {
 		// If chalk() was called by itself or with a string,
 		// return the string itself as a string.
-		return strings.join(' ');
+		return strings.join(" ");
 	}
 
 	const arguments_ = strings.slice(1);
@@ -207,23 +203,23 @@ const chalkTag = (chalk, ...strings) => {
 
 	for (let i = 1; i < firstString.length; i++) {
 		parts.push(
-			String(arguments_[i - 1]).replace(/[{}\\]/g, '\\$&'),
+			String(arguments_[i - 1]).replace(/[{}\\]/g, "\\$&"),
 			String(firstString.raw[i])
 		);
 	}
 
 	if (template === undefined) {
-		template = require('./templates');
+		template = require("./templates");
 	}
 
-	return template(chalk, parts.join(''));
+	return template(chalk, parts.join(""));
 };
 
 Object.defineProperties(Chalk.prototype, styles);
 
-const chalk = Chalk(); // eslint-disable-line new-cap
+const chalk = Chalk();
 chalk.supportsColor = stdoutColor;
-chalk.stderr = Chalk({level: stderrColor ? stderrColor.level : 0}); // eslint-disable-line new-cap
+chalk.stderr = Chalk({level: stderrColor ? stderrColor.level : 0});
 chalk.stderr.supportsColor = stderrColor;
 
 module.exports = chalk;

@@ -8,7 +8,7 @@
 		"url": "git+https://github.com/Kitsune-Softworks/chalk-node.git"
 	},
 	"bugs": {
-	  "url": "https://github.com/Kitsune-Softworks/chalk-node/issues"
+		"url": "https://github.com/Kitsune-Softworks/chalk-node/issues"
 	},
 	"homepage": "https://github.com/Kitsune-Softworks/chalk-node#readme",
 	"main": "source",
@@ -53,6 +53,7 @@
 	"devDependencies": {
 		"ava": "^2.4.0",
 		"coveralls": "^3.0.7",
+		"eslint": "^8.16.0",
 		"execa": "^4.0.0",
 		"import-fresh": "^3.1.0",
 		"matcha": "^0.7.0",

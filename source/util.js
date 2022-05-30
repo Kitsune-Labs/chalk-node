@@ -1,5 +1,3 @@
-'use strict';
-
 const stringReplaceAll = (string, substring, replacer) => {
 	let index = string.indexOf(substring);
 	if (index === -1) {
@@ -8,7 +6,7 @@ const stringReplaceAll = (string, substring, replacer) => {
 
 	const substringLength = substring.length;
 	let endIndex = 0;
-	let returnValue = '';
+	let returnValue = "";
 	do {
 		returnValue += string.substr(endIndex, index - endIndex) + substring + replacer;
 		endIndex = index + substringLength;
@@ -21,12 +19,12 @@ const stringReplaceAll = (string, substring, replacer) => {
 
 const stringEncaseCRLFWithFirstIndex = (string, prefix, postfix, index) => {
 	let endIndex = 0;
-	let returnValue = '';
+	let returnValue = "";
 	do {
-		const gotCR = string[index - 1] === '\r';
-		returnValue += string.substr(endIndex, (gotCR ? index - 1 : index) - endIndex) + prefix + (gotCR ? '\r\n' : '\n') + postfix;
+		const gotCR = string[index - 1] === "\r";
+		returnValue += string.substr(endIndex, (gotCR ? index - 1 : index) - endIndex) + prefix + (gotCR ? "\r\n" : "\n") + postfix;
 		endIndex = index + 1;
-		index = string.indexOf('\n', endIndex);
+		index = string.indexOf("\n", endIndex);
 	} while (index !== -1);
 
 	returnValue += string.substr(endIndex);
