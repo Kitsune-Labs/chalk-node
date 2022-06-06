@@ -1,16 +1,16 @@
 {
-	"name": "@kitsune-softworks/chalk-node",
+	"name": "@kitsune-laboratories/chalk-node",
 	"version": "4.1.2",
 	"description": "Terminal string styling done right",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Kitsune-Softworks/chalk-node.git"
+		"url": "git+https://github.com/Kitsune-Laboratories/chalk-node.git"
 	},
 	"bugs": {
-		"url": "https://github.com/Kitsune-Softworks/chalk-node/issues"
+		"url": "https://github.com/Kitsune-Laboratories/chalk-node/issues"
 	},
-	"homepage": "https://github.com/Kitsune-Softworks/chalk-node#readme",
+	"homepage": "https://github.com/Kitsune-Laboratories/chalk-node#readme",
 	"main": "source",
 	"engines": {
 		"node": ">=10"
