@@ -1,0 +1,8 @@
+.github
+.vscode
+examples
+media
+tests
+.eslintrc
+.gitignore
+yarn.lock
